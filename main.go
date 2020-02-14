@@ -29,6 +29,7 @@ func main() {
 
 	// Routes
 	r.GET("/books", controllers.FindBooks)
+	r.GET("/books/:id", controllers.FindBook)
 
 	// Run the server
 	r.Run()
