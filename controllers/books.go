@@ -8,6 +8,16 @@ import (
 	"github.com/rahmanfadhil/gin-boookstore/models"
 )
 
+type CreateBookInput struct {
+	Title  string `json:"title" binding:"required"`
+	Author string `json:"author" binding:"required"`
+}
+
+type UpdateBookInput struct {
+	Title  string `json:"title"`
+	Author string `json:"author"`
+}
+
 // GET /books
 // Find all books
 func FindBooks(c *gin.Context) {
@@ -22,6 +32,7 @@ func FindBooks(c *gin.Context) {
 func FindBook(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 
+	// Get model if exist
 	var book models.Book
 	if err := db.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
@@ -29,4 +40,58 @@ func FindBook(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": book})
+}
+
+func CreateBook(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+
+	// Validate input
+	var input CreateBookInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Create book
+	book := models.Book{Title: input.Author, Author: input.Author}
+	db.Create(&book)
+
+	c.JSON(http.StatusOK, gin.H{"data": book})
+}
+
+func UpdateBook(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+
+	// Get model if exist
+	var book models.Book
+	if err := db.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+		return
+	}
+
+	// Validate input
+	var input UpdateBookInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	db.Model(&book).Updates(input)
+
+	c.JSON(http.StatusOK, gin.H{"data": book})
+}
+
+func DeleteBook(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+
+	// Get model if exist
+	var book models.Book
+	if err := db.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+		return
+	}
+
+	db.Delete(&book)
+
+	c.JSON(http.StatusOK, gin.H{"data": true})
 }
