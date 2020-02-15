@@ -1,4 +1,4 @@
-module github.com/rahmanfadhil/gin-boookstore
+module github.com/rahmanfadhil/gin-bookstore
 
 go 1.13
 
