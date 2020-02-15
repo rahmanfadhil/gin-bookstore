@@ -29,6 +29,8 @@ func FindBooks(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": books})
 }
 
+// GET /books/:id
+// Find a book
 func FindBook(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 
@@ -42,6 +44,8 @@ func FindBook(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": book})
 }
 
+// POST /books
+// Create new book
 func CreateBook(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 
@@ -59,6 +63,8 @@ func CreateBook(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": book})
 }
 
+// PATCH /books/:id
+// Update a book
 func UpdateBook(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 
@@ -81,6 +87,8 @@ func UpdateBook(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": book})
 }
 
+// DELETE /books/:id
+// Delete a book
 func DeleteBook(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 
