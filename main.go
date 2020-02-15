@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/rahmanfadhil/gin-boookstore/controllers"
-	"github.com/rahmanfadhil/gin-boookstore/models"
+	"github.com/rahmanfadhil/gin-bookstore/controllers"
+	"github.com/rahmanfadhil/gin-bookstore/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"

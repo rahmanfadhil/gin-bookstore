@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"github.com/rahmanfadhil/gin-boookstore/models"
+	"github.com/rahmanfadhil/gin-bookstore/models"
 )
 
 type CreateBookInput struct {
