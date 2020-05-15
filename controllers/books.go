@@ -57,7 +57,7 @@ func CreateBook(c *gin.Context) {
 	}
 
 	// Create book
-	book := models.Book{Title: input.Author, Author: input.Author}
+	book := models.Book{Title: input.Title, Author: input.Author}
 	db.Create(&book)
 
 	c.JSON(http.StatusOK, gin.H{"data": book})
