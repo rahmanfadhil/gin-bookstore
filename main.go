@@ -11,13 +11,7 @@ func main() {
 	r := gin.Default()
 
 	// Connect to database
-	db := models.SetupModels()
-
-	// Provide db to controllers
-	r.Use(func(c *gin.Context) {
-		c.Set("db", db)
-		c.Next()
-	})
+	models.ConnectDatabase()
 
 	// Routes
 	r.GET("/books", controllers.FindBooks)

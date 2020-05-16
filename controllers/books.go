@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	"github.com/rahmanfadhil/gin-bookstore/models"
 )
 
@@ -21,10 +20,8 @@ type UpdateBookInput struct {
 // GET /books
 // Find all books
 func FindBooks(c *gin.Context) {
-	db := c.MustGet("db").(*gorm.DB)
-
 	var books []models.Book
-	db.Find(&books)
+	models.DB.Find(&books)
 
 	c.JSON(http.StatusOK, gin.H{"data": books})
 }
@@ -32,11 +29,9 @@ func FindBooks(c *gin.Context) {
 // GET /books/:id
 // Find a book
 func FindBook(c *gin.Context) {
-	db := c.MustGet("db").(*gorm.DB)
-
 	// Get model if exist
 	var book models.Book
-	if err := db.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
@@ -47,8 +42,6 @@ func FindBook(c *gin.Context) {
 // POST /books
 // Create new book
 func CreateBook(c *gin.Context) {
-	db := c.MustGet("db").(*gorm.DB)
-
 	// Validate input
 	var input CreateBookInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -58,7 +51,7 @@ func CreateBook(c *gin.Context) {
 
 	// Create book
 	book := models.Book{Title: input.Title, Author: input.Author}
-	db.Create(&book)
+	models.DB.Create(&book)
 
 	c.JSON(http.StatusOK, gin.H{"data": book})
 }
@@ -66,11 +59,9 @@ func CreateBook(c *gin.Context) {
 // PATCH /books/:id
 // Update a book
 func UpdateBook(c *gin.Context) {
-	db := c.MustGet("db").(*gorm.DB)
-
 	// Get model if exist
 	var book models.Book
-	if err := db.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
@@ -82,7 +73,7 @@ func UpdateBook(c *gin.Context) {
 		return
 	}
 
-	db.Model(&book).Updates(input)
+	models.DB.Model(&book).Updates(input)
 
 	c.JSON(http.StatusOK, gin.H{"data": book})
 }
@@ -90,16 +81,14 @@ func UpdateBook(c *gin.Context) {
 // DELETE /books/:id
 // Delete a book
 func DeleteBook(c *gin.Context) {
-	db := c.MustGet("db").(*gorm.DB)
-
 	// Get model if exist
 	var book models.Book
-	if err := db.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
 
-	db.Delete(&book)
+	models.DB.Delete(&book)
 
 	c.JSON(http.StatusOK, gin.H{"data": true})
 }
