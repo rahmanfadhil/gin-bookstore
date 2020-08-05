@@ -1,4 +1,4 @@
-# Gin Bookstore (REST API)
+# Bookstore REST API using Gin and Gorm
 
 How to use:
 
