@@ -24,4 +24,7 @@ test.db
 /vendor/
 /Godeps/
 
+### local DB's ###
+*.db
+
 # End of https://www.gitignore.io/api/go
